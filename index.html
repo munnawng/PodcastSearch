@@ -31,11 +31,18 @@
             <span>Podcasts Similar to "{{userInput}}":</span>
             
             <div class = listResults v-for="podcast in podcastList">
-               <!-- show results here: cover of the podcast and title -->
-               {{podcast["collectionName"]}}
-               <img :src="podcast['image']">
+               <div class='panel panel-info' style='width:400px'>
+                  <!-- show results here: cover of the podcast and title -->
+                  <div class='panel-heading'>
+                     <a :href='podcast["podurl"]'>{{podcast["collectionName"]}}</a>
+                  </div>
+                  <div class='panel-body'>
+                     <a :href='podcast["podurl"]'>
+                        <img :src="podcast['image']" class="center-block">
+                     </a>
+                  </div>
+               </div>
             </div>
-         
          </div>
       </div>
       <script src="script.js"></script>

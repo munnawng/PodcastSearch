@@ -8,8 +8,29 @@
       <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
       </title>
    </head>
+      <style>
+
+      h5{
+      padding-bottom: 5px;
+      padding-top: 3px;
+      }
+      .genre{
+      border:solid 2px;
+      border-radius: 3px;
+      margin:5px;
+      white-space: nowrap;
+      background-color:#ccc;
+      padding:2px;
+      }
+      
+      .searchResults {
+
+      }
+   </style>
    <body>
       <div id='app'>
          <div class = searchPage v-show="awaitingInput">
@@ -19,18 +40,51 @@
             <div class = "container d-flex justify-content-center">
                <div class="input-group col-sm-7 input-group-lg"> 
                   <!-- SEARCH BAR -->
-                  <input type="text" placeholder="Enter a Podcast Name and We'll Find You a Recommendation!" class="form-control shadow-lg p-3 mb-5 bg-white rounded" v-on:keyup.13="pressEnter($event.target.value); $event.target.value=''"> 
+                  <input type="text" placeholder="Enter a Podcast Name and We'll Find You a Recommendation!" class="form-control shadow-lg p-3 mb-5 bg-white rounded" v-model="querytext" @keyup.enter='search_text'> 
+
                </div>
             </div>
          </div>
-         <div class="back" v-show="!awaitingInput">
+         <div class="back" v-show="!awaitingInput" style="display:block;">
             <button class="btn btn-success btn-lg" type="submit" v-on:click="awaitingInput=true">Back</button>
          </div>
-         <div class = resultsPage v-show="!awaitingInput">
+         <div class = resultsPage v-show="!awaitingInput" style="padding-top:200px;padding-left:50px">
             <span>Podcasts Similar to "{{userInput}}":</span>
-            <div class = listResults>
-               <!-- show results here: cover of the podcast and title -->
+       <div class="searchResults" style>
+         <div v-if="isLoading" class="row align-items-center">
+            <div class="col">
+               <img src="loading.gif">
             </div>
+         </div>
+         <div v-for="item in display" :id="item.trackId" class="col-lg-6 col-md-6 col-sm-6" style='margin-bottom: 50px; display: inline; height: 250px' >
+           <div class="col-sm-4" style='max-width:200px;margin-right: 30px'>
+             <img style='width: 120%; display: inline;' :src="item.artworkUrl100">
+          </div>
+
+          <div class="col-sm-6" style='max-height: 250px;'>
+             <ul class="nav nav-tabs">
+               <li class="active"><a data-toggle="tab" :href="`#${item.trackId}-description`">Description</a>
+               </li>
+               <li><a data-toggle="tab" :href="`#${item.trackId}-track`">Track info</a>
+               </li>
+             </ul>
+             <div class="tab-content">
+               <div :id="item.trackId + '-description'" class="tab-pane in active">
+                  <p v-if="item.artistName"><strong>Artist Name: </strong>{{ item.artistName }}</p>
+                  <p v-else><strong>Author Name: </strong>No information provided</p>
+                  <p v-if="item.collectionName"><strong>Collection Name: </strong>{{ item.collectionName }}</p>
+                  <p v-else><strong>Podcast Name: </strong>No information provided</p>
+                  <p v-if="item.collectionPrice"><strong>Price: </strong>{{ (item.trackPrice == -1)? 0 : item.trackPrice }}</p>
+               </div>
+               <div :id="item.trackId + '-track'" class="tab-pane">
+                  <p v-if="item.trackId"><strong>Track ID: </strong>{{ item.trackId }}</p>
+                  <p v-else><strong>Track ID: </strong>none</p>
+                  <p><strong>Country: </strong>{{ item.country }}</p>
+               </div>
+             </div>
+           </div>
+         </div>
+      </div>
          </div>
       </div>
       <script src="script.js"></script>

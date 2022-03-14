@@ -10,14 +10,17 @@ body {
     height: 100vh;
 }
 
-.resultsPage {
+/*.resultsPage {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}*/
+.searchResults {
+    display:  block;
+    top: 200px;
 }
-
 .form-control {
     font-size: 20px !important;
     color: #495057;

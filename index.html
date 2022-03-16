@@ -20,33 +20,37 @@
             <div class = "container d-flex justify-content-center">
                <div class="input-group col-sm-7 input-group-lg"> 
                   <!-- SEARCH BAR -->
-                  <input type="text" placeholder="Enter a Podcast Name and We'll Find You a Recommendation!" class="form-control shadow-lg p-3 mb-5 bg-white rounded" v-on:keyup.13="pressEnter($event.target.value); $event.target.value=''"> 
+                  <input type="text" placeholder="Enter a Podcast Name and We'll Find You a Recommendation!" class="form-control shadow-lg p-3 mb-5 bg-white rounded" v-on:keyup.13="pressEnter()" v-model='userInput'> 
                </div>
             </div>
          </div>
          <div class="back" v-show="!awaitingInput">
-            <button class="btn btn-success btn-lg" type="submit" v-on:click="awaitingInput=true">Back</button>
+            <button class="btn btn-success btn-lg" type="submit" v-on:click="awaitingInput=true; userInput=''">Back</button>
          </div>
          <div class = resultsPage v-show="!awaitingInput">
-            <span> <h1>Podcasts Similar to "{{userInput}}":</h1></span>
+            <div class="searchBar"> 
+               <!-- SEARCH BAR -->
+               <input type="text" placeholder="Enter a Podcast Name and We'll Find You a Recommendation!" class="form-control shadow-lg p-3 mb-5 bg-white rounded" v-on:keyup.13="pressEnter()" v-model='userInput'> 
+            </div>
+            <span> <h1>Podcasts Similar to "{{currentQuery}}":</h1></span>
             
             <div class = listResults v-for="podcast in podcastList">
                <div class='panel panel-info' style='width:400px'>
                   <!-- show results here: cover of the podcast and title -->
                   <div class='panel-heading'>
-                     <a :href='podcast["podurl"]'>{{podcast["collectionName"]}}</a>
+                     <a :href='podcast["podurl"]' target="_blank">{{podcast["collectionName"]}}</a>
                   </div>
                   <div class='panel-body'>
-                     <a :href='podcast["podurl"]'>
+                     <a :href='podcast["podurl"]' target="_blank">
                         <img :src="podcast['image']">
                      </a>
                   </div>
                   <!--<div class = "logo d-flex justify-content-center"> for icons centering--> 
                   <div class = "podcast-icons">
-                     <a :href='podcast["opodurl"]'>
+                     <a :href='podcast["opodurl"]' target="_blank">
                         <img src="overcast_1.png">
                      </a>
-                     <a :href='podcast["podurl"]'>
+                     <a :href='podcast["podurl"]' target="_blank">
                         <img src="applepodcast_1.png">
                      </a>                  
                   </div>

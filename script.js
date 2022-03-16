@@ -3,6 +3,7 @@ var resultView = new Vue({
   data: {
     awaitingInput: true,
     userInput: "",
+    currentQuery: "",
     itunesDefaultURL: 'https://itunes.apple.com/search?entity=podcast&&country=US&origin=*&term=',
     itunesGenreSearch: 'https://itunes.apple.com/search?term=podcast&limit=10&genreId=',
     applePodcastsDefaultURL: 'https://podcasts.apple.com/us/podcast/apple-events/',
@@ -15,12 +16,11 @@ var resultView = new Vue({
       this.podcastList = []
     },
 
-    pressEnter(value) {
+    pressEnter() {
       this.reset()
-      this.userInput = value
       this.awaitingInput = false
-
-      this.search = this.itunesDefaultURL + value
+      this.currentQuery = this.userInput
+      this.search = this.itunesDefaultURL + this.userInput
       // URL can't have spaces, so add '+'
       this.search = this.search.split(' ').join('+')
 

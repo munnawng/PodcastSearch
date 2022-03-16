@@ -15,7 +15,7 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    padding-top: 125px;
+    padding-top: 100px;
 }
 
 .listResults {
@@ -40,4 +40,12 @@ body {
 .btn-lg {
     font-size: 15px;
     padding: 10px 28px;
+}
+
+/* .input-group {
+    height: auto;
+} */
+
+.searchBar {
+    width: 40%;
 }

@@ -28,15 +28,17 @@ var resultView = new Vue({
         this.allResultCount = this.info.data.resultCount
         this.resultCount = this.allResultCount
         queryCollectionName = response1.data.results[0].collectionName
-
         newSearch = this.itunesGenreSearch + response1.data.results[0].genreIds[0]
 
         axios.get(newSearch).then(response2 => { 
             for (let i = 0; i < 10; i++) {
               podcast = {}; // has collectionName and image
               podcast["collectionName"] = response2.data.results[i].collectionName
-              podcast["image"] = response2.data.results[i].artworkUrl100
+              podcast["image"] = response2.data.results[i].artworkUrl600
               podcast["podurl"] = response2.data.results[i].trackViewUrl
+              podcast['genres'] = response2.data.results[i].genres
+              console.log(podcast['genres'])
+
               if (podcast["collectionName"] != queryCollectionName) {
                 this.podcastList.push(podcast)
               }

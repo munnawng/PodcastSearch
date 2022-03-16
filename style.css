@@ -18,6 +18,48 @@ body {
     padding-top: 125px;
 }
 
+.itemrow {
+    width: 100%;
+}
+
+.podcast-image {
+    max-height:100%; 
+    max-width:100%;
+    border-radius: 10px;
+}
+.podcast-item {
+    width:300px; 
+    height:300px;
+    border-radius: 10px;
+    transition: 0.25s;
+
+}
+.podcast-item:hover {
+    transform: scale(1.05);
+    transition: 0.25s;
+    background-color: black;
+}
+.podcast-name {
+    visibility: hidden;
+}
+
+.podcast-item:hover .podcast-image {
+    opacity: 0.5;
+}
+.podcast-item:hover .podcast-name {
+    visibility: visible;
+    z-index: 10;
+    padding: 30px;
+    position: absolute;
+    top: 30px;
+    opacity: 1;
+    color: white;
+}
+.btn-listen {
+    border: solid;
+    border-color: white;
+    background-color: transparent;
+}
 .listResults {
     padding-top: 20px;
 }

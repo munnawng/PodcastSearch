@@ -5,6 +5,8 @@ var resultView = new Vue({
     userInput: "",
     itunesDefaultURL: 'https://itunes.apple.com/search?entity=podcast&&country=US&origin=*&term=',
     itunesGenreSearch: 'https://itunes.apple.com/search?term=podcast&limit=10&genreId=',
+    applePodcastsDefaultURL: 'https://podcasts.apple.com/us/podcast/apple-events/',
+    overcastDefaultURL:'https://overcast.fm/itunes',
     search: '',
     podcastList: [],
   },
@@ -37,6 +39,14 @@ var resultView = new Vue({
               podcast["collectionName"] = response2.data.results[i].collectionName
               podcast["image"] = response2.data.results[i].artworkUrl100
               podcast["podurl"] = response2.data.results[i].trackViewUrl
+
+              let urlString = response2.data.results[i].trackViewUrl
+              let idx = urlString.lastIndexOf("id")
+              let id = urlString.slice(idx, idx + 12) //id can be size 9 or 10
+              let idstring = urlString.substr(idx + 12, 1) != '?' ? urlString.slice(idx, idx + 11) : urlString.slice(idx, idx + 12)
+              podcast["id"] = idstring
+              podcast["opodurl"] = this.overcastDefaultURL + idstring.substr(2); //removes id
+
               if (podcast["collectionName"] != queryCollectionName) {
                 this.podcastList.push(podcast)
               }

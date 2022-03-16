@@ -28,7 +28,7 @@
             <button class="btn btn-success btn-lg" type="submit" v-on:click="awaitingInput=true">Back</button>
          </div>
          <div class = resultsPage v-show="!awaitingInput">
-            <span>Podcasts Similar to "{{userInput}}":</span>
+            <span> <h1>Podcasts Similar to "{{userInput}}":</h1></span>
             
             <div class = listResults v-for="podcast in podcastList">
                <div class='panel panel-info' style='width:400px'>
@@ -38,9 +38,19 @@
                   </div>
                   <div class='panel-body'>
                      <a :href='podcast["podurl"]'>
-                        <img :src="podcast['image']" class="center-block">
+                        <img :src="podcast['image']">
                      </a>
                   </div>
+                  <!--<div class = "logo d-flex justify-content-center"> for icons centering--> 
+                  <div class = "podcast-icons">
+                     <a :href='podcast["opodurl"]'>
+                        <img src="overcast_1.png">
+                     </a>
+                     <a :href='podcast["podurl"]'>
+                        <img src="applepodcast_1.png">
+                     </a>                  
+                  </div>
+                  <!-- other urls -->
                </div>
             </div>
          </div>

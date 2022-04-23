@@ -101,3 +101,12 @@ body {
     height: 50px;
     width: 50px;
 }
+
+.sortItems {
+    display: inline-block;
+    margin: 3px;
+}
+
+#clickable {
+    cursor:pointer;
+}

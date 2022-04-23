@@ -8,6 +8,9 @@ var resultView = new Vue({
     spotifySearch: 'https://open.spotify.com/search/',
     search: '',
     podcastList: [],
+    copy_podcastList: [],
+    renderKey:0,
+    genreDict: {}, // key=name of genre, val=0 if the corresponding sort button is not clicked and 1 if it is
     randomPodcasts_all: [{ collectionName:"ID10T with Chris Hardwick", genres:["Comedy Interviews","Comedy","TV & Film"], image:"https://is1-ssl.mzstatic.com/image/thumb/Podcasts115/v4/4a/dd/40/4add407f-c0bb-2eb2-2c14-2fc695e94254/mza_17759441340856837215.jpeg/600x600bb.jpg", podurl:"https://podcasts.apple.com/us/podcast/id10t-with-chris-hardwick/id355187485?uo=4", podurl2:"https://open.spotify.com/search/ID10T%20with%20Chris%20Hardwick" }, 
                      { collectionName:"Wait Wait... Don't Tell Me!" , genres:["Comedy","Leisure"] , image:"https://is2-ssl.mzstatic.com/image/thumb/Podcasts116/v4/07/8c/f9/078cf90d-1268-5e0c-1957-dd8875ee84b7/mza_15153281774076462897.jpg/600x600bb.jpg", podurl:"https://podcasts.apple.com/us/podcast/wait-wait-dont-tell-me/id121493804?uo=4", podurl2:"https://open.spotify.com/search/Wait%20Wait...%20Don%27t%20Tell%20Me%21" },
                      { collectionName:"Monday Morning Podcast", genres:["Comedy"], image:"https://is5-ssl.mzstatic.com/image/thumb/Podcasts124/v4/04/d4/f5/04d4f532-cb53-9770-47c9-110414741950/mza_10493561346513613273.jpg/600x600bb.jpg", podurl: "https://podcasts.apple.com/us/podcast/monday-morning-podcast/id480486345?uo=4", podurl2:"https://open.spotify.com/search/Monday%20Morning%20Podcast" },
@@ -64,6 +67,42 @@ var resultView = new Vue({
   methods: {
     reset() {
       this.podcastList = []
+      this.copy_podcastList = []
+      this.genreDict = {}
+    },
+
+    genreClick(genre, event) {
+      already_selected_flag = false // if a button is already selected and is clicked again--return to default state
+      if (this.genreDict[genre] == 1) {
+        already_selected_flag = true
+      }
+      
+      // first reset all to un-clicked value of zero
+      console.log(genre)
+      for (var key in this.genreDict) {
+        this.genreDict[key] = 0
+      }
+      
+      // set clicked genre to active (1) unless it was already clicked
+      if (!already_selected_flag) {
+        this.genreDict[genre] = 1
+      }
+      console.log(this.genreDict)
+
+      this.renderKey++
+
+      this.genreSort(genre, already_selected_flag)
+    },
+
+    genreSort(genre, already_selected_flag) {
+      this.podcastList = []
+      this.podcastList = [].concat(this.copy_podcastList) // return to full list first
+
+      if (!already_selected_flag) { // if it was already selected that means we just go back to full list
+        this.podcastList = this.podcastList.filter(function(podcast) { return podcast['genres'].includes(genre)})
+
+      }
+      
     },
 
     pressEnter(value) {
@@ -97,12 +136,21 @@ var resultView = new Vue({
               podcast["podurl"] = response2.data.results[i].trackViewUrl
               podcast["podurl2"] = this.spotifySearch + podcast["collectionName"]
               podcast['genres'] = response2.data.results[i].genres
-              console.log(podcast['genres'])
 
               // if there is a PODCASTS tag on this podcast, let's remove it
               podcastTagIndex = podcast['genres'].indexOf("Podcasts")
               if (podcastTagIndex > -1) {
                 podcast['genres'].splice(podcastTagIndex, 1)
+              }
+
+              // add genres to genreDict if it isn't already there
+              for (k=0; k < podcast['genres'].length; k++) {
+                curr_genre = podcast['genres'][k]
+
+                if (!(curr_genre in this.genreDict)) {
+                  // if genre is NOT already in our list, add it
+                  this.genreDict[curr_genre] = 0
+                }
               }
 
               if (podcast["collectionName"] != queryCollectionName) {
@@ -113,6 +161,7 @@ var resultView = new Vue({
 
             } // END FOR
             console.log(this.podcastList)
+            this.copy_podcastList = [].concat(this.podcastList)
 
         })
       })

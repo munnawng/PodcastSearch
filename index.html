@@ -6,7 +6,6 @@
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
       <link rel="stylesheet" href="style.css">
       <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-      <script src="scripts/require.js"></script>
 <!--       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script> -->      
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
       <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
@@ -34,7 +33,7 @@
 
                      <div class ="col listResultsLower" v-for="podcast in randomPodcasts_display">
                         <div class="podcast-item">
-                           <a>
+                           <a :href='podcast["podurl"]' target="_blank" style="color: #FFFFFF; text-decoration: none">
                               <img :src="podcast['image']" class="center-block podcast-image">
                               <div class="podcast-name">
                                  <h1>{{podcast["collectionName"]}}</h1>
@@ -49,7 +48,14 @@
                                     <span class="badge rounded-pill bg-success">{{podcast['genres'][1]}}</span>
                                     <span class="badge rounded-pill bg-warning text-dark">{{podcast['genres'][2]}}</span>
                                  </div>
-                                 <div v-if="podcast['genres'].length == 4" style="margin-top: 10px">
+                                 <div v-if="podcast['genres'].length == 2" style="margin-top: 10px">
+                                    <div class="badge rounded-pill bg-primary">{{podcast['genres'][0]}}</div>
+                                    <span class="badge rounded-pill bg-success">{{podcast['genres'][1]}}</span>
+                                 </div>
+                                 <div v-if="podcast['genres'].length == 1" style="margin-top: 10px">
+                                    <div class="badge rounded-pill bg-primary">{{podcast['genres'][0]}}</div>
+                                 </div>
+                                 <div v-if="podcast['genres'].length > 3" style="margin-top: 10px">
                                     <div class="badge rounded-pill bg-danger">{{podcast['genres'][0]}}</div>
                                     <span class="badge rounded-pill bg-primary">{{podcast['genres'][1]}}</span>
                                     <span class="badge rounded-pill bg-dark">{{podcast['genres'][2]}}</span>
@@ -80,10 +86,17 @@
                <div class="row align-items-start itemrow">
                   <div>
                      <h1>Recommendations similar to "{{userInput}}"</h1>
+                     <div><b>Sort:</b> 
+                        <div v-bind:key="renderKey" class="sortItems" v-for="(val,genre) in genreDict">
+                           <div v-if="genreDict[genre]==0" v-on:click="genreClick(genre, $event)" id="clickable" class="badge rounded-pill bg-success">{{genre}}</div>
+                           <div v-if="genreDict[genre]==1" v-on:click="genreClick(genre, $event)" id="clickable" class="badge rounded-pill bg-warning text-dark">{{genre}}</div>
+                        </div>
+
+                     </div>
                   </div>
                   <div class ="col listResults" v-for="podcast in podcastList">
                      <div class="podcast-item">
-                        <a>
+                        <a :href='podcast["podurl"]' target="_blank" style="color: #FFFFFF; text-decoration: none">
                            <img :src="podcast['image']" class="center-block podcast-image">
                            <div class="podcast-name">
                               <h1>{{podcast["collectionName"]}}</h1>
@@ -98,7 +111,14 @@
                                  <span class="badge rounded-pill bg-success">{{podcast['genres'][1]}}</span>
                                  <span class="badge rounded-pill bg-warning text-dark">{{podcast['genres'][2]}}</span>
                               </div>
-                              <div v-if="podcast['genres'].length == 4" style="margin-top: 10px">
+                              <div v-if="podcast['genres'].length == 2" style="margin-top: 10px">
+                                 <div class="badge rounded-pill bg-primary">{{podcast['genres'][0]}}</div>
+                                 <span class="badge rounded-pill bg-success">{{podcast['genres'][1]}}</span>
+                              </div>
+                              <div v-if="podcast['genres'].length == 1" style="margin-top: 10px">
+                                 <div class="badge rounded-pill bg-primary">{{podcast['genres'][0]}}</div>
+                              </div>
+                              <div v-if="podcast['genres'].length > 3" style="margin-top: 10px">
                                  <div class="badge rounded-pill bg-danger">{{podcast['genres'][0]}}</div>
                                  <span class="badge rounded-pill bg-primary">{{podcast['genres'][1]}}</span>
                                  <span class="badge rounded-pill bg-dark">{{podcast['genres'][2]}}</span>
